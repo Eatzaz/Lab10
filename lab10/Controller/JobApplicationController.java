@@ -25,12 +25,13 @@ public class JobApplicationController {
         if(errors.hasErrors()){
             return ResponseEntity.status(400).body(errors.getFieldError().getDefaultMessage());
         }
-        boolean isTrue=jobApplicationService.ApplyJob(jobApplication);
-        if(isTrue){
-        return ResponseEntity.status(200).body(new ApiResponse("added Job Success"));}
-        return ResponseEntity.status(400).body(new ApiResponse("valid:The user or the job post is not Exist"));
+        String isTrue=jobApplicationService.ApplyJob(jobApplication);
+        if(isTrue.equals("true")){
+        return ResponseEntity.status(200).body(new ApiResponse("added Job Success"));
+        }
+        return ResponseEntity.status(400).body(isTrue);
     }
-
+    
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteJob(@PathVariable Integer id){
         boolean isTrue=jobApplicationService.WithdrawJob(id);
