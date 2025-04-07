@@ -20,14 +20,16 @@ public class JobApplicationService {
     public List<JobApplication> getJobApp(){
         return jobApplicationRepository.findAll();
     }
-    public boolean ApplyJob(JobApplication jobApplication){
+    public String ApplyJob(JobApplication jobApplication){
         User user=userRepository.getById(jobApplication.getUserID());
         JobPost jobPost=jobPostRepository.getById(jobApplication.getJobPostID());
-      if(user==null && jobPost==null){
-          return false;
+        if(user==null || jobPost==null)return "NOT FOUND";
+        for(JobApplication jobApplication1:jobApplicationRepository.findAll()){
+      if(user.getId().equals(jobApplication1.getUserID()) && jobPost.getId().equals(jobApplication1.getJobPostID())){
+          return "al-r apply";}
       }
-      jobApplicationRepository.save(jobApplication);
-      return true;
+        jobApplicationRepository.save(jobApplication);
+        return "true";
     }
 
     public boolean WithdrawJob(Integer id){
